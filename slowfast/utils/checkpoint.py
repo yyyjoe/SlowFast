@@ -222,6 +222,8 @@ def load_checkpoint(
         epoch = -1
     else:
         # Load the checkpoint on CPU to avoid GPU mem spike.
+        print(path_to_checkpoint)
+        #checkpoint = torch.load(path_to_checkpoint, map_location="cpu")
         checkpoint = torch.load(path_to_checkpoint, map_location="cpu")
         if inflation:
             # Try to inflate the model.
