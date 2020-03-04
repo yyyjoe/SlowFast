@@ -4,7 +4,8 @@
 """Functions that handle saving and loading of checkpoints."""
 
 import os
-import pickle
+#import pickle
+import cPickle as pickle  
 from collections import OrderedDict
 import torch
 
