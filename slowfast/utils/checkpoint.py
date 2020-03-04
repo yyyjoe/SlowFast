@@ -226,7 +226,7 @@ def load_checkpoint(
         #checkpoint = torch.load(path_to_checkpoint, map_location="cpu")
         #with open(path_to_checkpoint, 'rb') as pickle_file:
         #    checkpoint = pickle.load(pickle_file)
-        checkpoint = torch.load(path_to_checkpoint)
+        checkpoint = torch.load(path_to_checkpoint,encoding='utf-8')
         if inflation:
             # Try to inflate the model.
             model_state_dict_3d = (
