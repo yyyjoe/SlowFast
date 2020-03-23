@@ -25,7 +25,7 @@ _C.BN.MOMENTUM = 0.1
 _C.BN.USE_PRECISE_STATS = False
 
 # Number of samples use to compute precise bn.
-_C.BN.NUM_BATCHES_PRECISE = 200
+_C.BN.NUM_BATCHES_PRECISE = 30
 
 # Weight decay value that applies on BN.
 _C.BN.WEIGHT_DECAY = 0.0
@@ -43,7 +43,7 @@ _C.TRAIN.ENABLE = True
 _C.TRAIN.DATASET = "kinetics"
 
 # Total mini-batch size.
-_C.TRAIN.BATCH_SIZE = 64
+_C.TRAIN.BATCH_SIZE = 16
 
 # Evaluate model on test data every eval period epochs.
 _C.TRAIN.EVAL_PERIOD = 1
@@ -89,8 +89,8 @@ _C.TEST.NUM_ENSEMBLE_VIEWS = 10
 _C.TEST.NUM_SPATIAL_CROPS = 3
 
 # Checkpoint types include `caffe2` or `pytorch`.
-_C.TEST.CHECKPOINT_TYPE = "pytorch"
-
+_C.TEST.CHECKPOINT_TYPE = "caffe2"
+_C.TEST.DEMO_PATH = ""
 
 # -----------------------------------------------------------------------------
 # ResNet options
@@ -249,6 +249,13 @@ _C.DATA.TEST_CROP_SIZE = 256
 # frame sampling.
 _C.DATA.TARGET_FPS = 30
 
+# Decoding backend, options include `pyav` or `torchvision`
+_C.DATA.DECODING_BACKEND = "pyav"
+
+# if True, sample uniformly in [1 / max_scale, 1 / min_scale] and take a
+# reciprocal to get the scale. If False, take a uniform sample from
+# [min_scale, max_scale].
+_C.DATA.INV_UNIFORM_SAMPLE = False
 
 # ---------------------------------------------------------------------------- #
 # Optimizer options

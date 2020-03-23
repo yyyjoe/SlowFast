@@ -2,7 +2,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 
 """Meters."""
-
+from sklearn.utils.extmath import softmax
 import datetime
 import numpy as np
 import os
@@ -218,7 +218,7 @@ class TestMeter(object):
     The accuracy is calculated with the given ground truth labels.
     """
 
-    def __init__(self, num_videos, num_clips, num_cls, overall_iters):
+    def __init__(self, num_videos, num_clips, num_cls, overall_iters,isDemo):
         """
         Construct tensors to store the predictions and labels. Expect to get
         num_clips predictions from each video, and calculate the metrics on
@@ -240,7 +240,7 @@ class TestMeter(object):
         self.clip_count = torch.zeros((num_videos)).long()
         # Reset metric.
         self.reset()
-
+        self.isDemo = isDemo
     def reset(self):
         """
         Reset the metric.
@@ -262,6 +262,7 @@ class TestMeter(object):
             clip_ids (tensor): clip indexes of the current batch, dimension is
                 N.
         """
+        #print(preds,labels)
         for ind in range(preds.shape[0]):
             vid_id = int(clip_ids[ind]) // self.num_clips
             self.video_labels[vid_id] = labels[ind]
@@ -279,10 +280,10 @@ class TestMeter(object):
         stats = {
             "split": "test_iter",
             "cur_iter": "{}".format(cur_iter + 1),
-            "eta": eta,
-            "time_diff": self.iter_timer.seconds(),
+            #"eta": eta,
+            #"time_diff": self.iter_timer.seconds(),
         }
-        logging.log_json_stats(stats)
+        #logging.log_json_stats(stats)
 
     def iter_tic(self):
         self.iter_timer.reset()
@@ -290,12 +291,19 @@ class TestMeter(object):
     def iter_toc(self):
         self.iter_timer.pause()
 
-    def finalize_metrics(self, ks=(1, 5)):
+    def finalize_metrics(self, ks=(1,2)):
         """
         Calculate and log the final ensembled metrics.
         ks (tuple): list of top-k values for topk_accuracies. For example,
             ks = (1, 5) correspods to top-1 and top-5 accuracy.
         """
+        if self.isDemo:
+            preds_numpy = self.video_preds.clone()
+            propability = np.transpose(np.array(softmax(preds_numpy.cpu().numpy())))
+            cwd = os.getcwd()
+            tmp_dir = os.path.join(cwd, "tmp/probability.npy")
+            jogging_label = 21
+            np.save(tmp_dir,propability[jogging_label]) 
         if not all(self.clip_count == self.num_clips):
             logger.warning(
                 "clip count {} ~= num clips {}".format(
@@ -310,11 +318,15 @@ class TestMeter(object):
         topks = [
             (x / self.video_preds.size(0)) * 100.0 for x in num_topks_correct
         ]
+        #binary = [
+        #    (x / self.video_preds.size(0)) * 100.0 for x in binary_correct
+        #]
         assert len({len(ks), len(topks)}) == 1
         stats = {"split": "test_final"}
+
         for k, topk in zip(ks, topks):
             stats["top{}_acc".format(k)] = "{:.{prec}f}".format(topk, prec=2)
-        logging.log_json_stats(stats)
+        #logging.log_json_stats(stats)
 
 
 class ScalarMeter(object):
@@ -458,13 +470,13 @@ class TrainMeter(object):
             "_type": "train_iter",
             "epoch": "{}/{}".format(cur_epoch + 1, self._cfg.SOLVER.MAX_EPOCH),
             "iter": "{}/{}".format(cur_iter + 1, self.epoch_iters),
-            "time_diff": self.iter_timer.seconds(),
-            "eta": eta,
+            #"time_diff": self.iter_timer.seconds(),
+            #"eta": eta,
             "top1_err": self.mb_top1_err.get_win_median(),
             "top5_err": self.mb_top5_err.get_win_median(),
             "loss": self.loss.get_win_median(),
             "lr": self.lr,
-            "mem": int(np.ceil(mem_usage)),
+            #"mem": int(np.ceil(mem_usage)),
         }
         logging.log_json_stats(stats)
 
@@ -485,13 +497,13 @@ class TrainMeter(object):
         stats = {
             "_type": "train_epoch",
             "epoch": "{}/{}".format(cur_epoch + 1, self._cfg.SOLVER.MAX_EPOCH),
-            "time_diff": self.iter_timer.seconds(),
-            "eta": eta,
+            #"time_diff": self.iter_timer.seconds(),
+            #"eta": eta,
             "top1_err": top1_err,
             "top5_err": top5_err,
             "loss": avg_loss,
-            "lr": self.lr,
-            "mem": int(np.ceil(mem_usage)),
+            #"lr": self.lr,
+            #"mem": int(np.ceil(mem_usage)),
         }
         logging.log_json_stats(stats)
 
@@ -574,11 +586,11 @@ class ValMeter(object):
             "_type": "val_iter",
             "epoch": "{}/{}".format(cur_epoch + 1, self._cfg.SOLVER.MAX_EPOCH),
             "iter": "{}/{}".format(cur_iter + 1, self.max_iter),
-            "time_diff": self.iter_timer.seconds(),
-            "eta": eta,
+            #"time_diff": self.iter_timer.seconds(),
+            #"eta": eta,
             "top1_err": self.mb_top1_err.get_win_median(),
             "top5_err": self.mb_top5_err.get_win_median(),
-            "mem": int(np.ceil(mem_usage)),
+            #"mem": int(np.ceil(mem_usage)),
         }
         logging.log_json_stats(stats)
 
@@ -596,11 +608,11 @@ class ValMeter(object):
         stats = {
             "_type": "val_epoch",
             "epoch": "{}/{}".format(cur_epoch + 1, self._cfg.SOLVER.MAX_EPOCH),
-            "time_diff": self.iter_timer.seconds(),
+            #"time_diff": self.iter_timer.seconds(),
             "top1_err": top1_err,
             "top5_err": top5_err,
-            "min_top1_err": self.min_top1_err,
-            "min_top5_err": self.min_top5_err,
-            "mem": int(np.ceil(mem_usage)),
+            #"min_top1_err": self.min_top1_err,
+            #"min_top5_err": self.min_top5_err,
+            #"mem": int(np.ceil(mem_usage)),
         }
         logging.log_json_stats(stats)

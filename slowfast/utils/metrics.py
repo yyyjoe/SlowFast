@@ -2,9 +2,17 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 
 """Functions for computing metrics."""
-
+import numpy as np
 import torch
-
+import sys
+import os
+from sklearn.utils.extmath import softmax
+torch.set_printoptions(profile="full")
+np.set_printoptions(threshold=sys.maxsize)
+def softmax22(x):
+    """Compute softmax values for each sets of scores in x."""
+    e_x = np.exp(x - np.max(x))
+    return e_x / e_x.sum(axis=0) # only difference
 
 def topks_correct(preds, labels, ks):
     """
@@ -22,6 +30,15 @@ def topks_correct(preds, labels, ks):
         topks_correct (list): list of numbers, where the `i`-th entry
             corresponds to the number of top-`ks[i]` correct predictions.
     """
+    #preds_numpy = preds.clone()
+    #propability = np.transpose(np.array(softmax(preds_numpy.cpu().numpy())))
+    #print(propability.shape)
+    #print(propability)
+    #print(propability[21])
+    #cwd = os.getcwd()
+    #tmp_dir = os.path.join(cwd, "tmp/probability.npy")
+    #jogging_label = 21
+    #np.save(tmp_dir,propability[jogging_label])     
     assert preds.size(0) == labels.size(
         0
     ), "Batch dim of predictions and labels must match"
@@ -34,11 +51,27 @@ def topks_correct(preds, labels, ks):
     # (batch_size, ) -> (max_k, batch_size).
     rep_max_k_labels = labels.view(1, -1).expand_as(top_max_k_inds)
     # (i, j) = 1 if top i-th prediction for the j-th sample is correct.
+    
+    #print(_top_max_k_vals[:,168])
+    #print(top_max_k_inds)
+    #print(rep_max_k_labels)
     top_max_k_correct = top_max_k_inds.eq(rep_max_k_labels)
     # Compute the number of topk correct predictions for each k.
     topks_correct = [
         top_max_k_correct[:k, :].view(-1).float().sum() for k in ks
     ]
+    #clone_pred = top_max_k_inds.clone()
+    #clone_label = rep_max_k_labels.clone()
+    #clone_pred[top_max_k_inds!=168]=0
+    #clone_label[rep_max_k_labels!=168]=0
+    #print("#####")
+    #print(clone_pred[0])
+    #print(clone_label[0])
+    #top_binary_correct = clone_pred.eq(clone_label)
+    
+    #print(top_binary_correct[0])
+    #binary_accuracy = (torch.sum((top_binary_correct[0] == True).float())/(list(top_binary_correct[0].size())[0])).data.cpu().numpy()
+    #print("Binary accuracy: ",binary_accuracy)
     return topks_correct
 
 
