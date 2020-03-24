@@ -54,7 +54,7 @@ $ python process_UTD.py
 ```
 # cd back to root directory
 python tools/run_net.py \
-  --cfg configs/Kinetics/C2D_8x8_R50.yaml \
+  --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
   DATA.PATH_TO_DATA_DIR path_to_UTD_dataset \
   TRAIN.CHECKPOINT_FILE_PATH path_to_Slowfast_8x8_R50_checkpoint \
   TRAIN.ENABLE True \
@@ -65,9 +65,13 @@ python tools/run_net.py \
 - Perform Testing (output fig.png and data.json)
 ```
 python tools/run_net.py \
-  --cfg configs/Kinetics/C2D_8x8_R50.yaml \
+  --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
   TEST.CHECKPOINT_TYPE pytorch \
   TEST.CHECKPOINT_FILE_PATH  path_to_checkpoint \
   TEST.DEMO_PATH path_to_demo_video\
   TEST.ENABLE True \
 ```
+
+# Result
+<img src="./figure/demo.gif"/>
+<img src="./figure/demo1_plot.png"/>
