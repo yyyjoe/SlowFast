@@ -1,7 +1,7 @@
 TRAIN:
   ENABLE: False
   DATASET: kinetics
-  BATCH_SIZE: 64
+  BATCH_SIZE: 16
   EVAL_PERIOD: 10
   CHECKPOINT_PERIOD: 10
   AUTO_RESUME: True
@@ -54,7 +54,7 @@ MODEL:
   LOSS_FUNC: cross_entropy
   DROPOUT_RATE: 0.25
 TEST:
-  ENABLE: True
+  ENABLE: False
   DATASET: kinetics
   BATCH_SIZE: 16
 DATA_LOADER:

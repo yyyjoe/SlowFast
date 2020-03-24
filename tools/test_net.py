@@ -2,10 +2,11 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
 
 """Multi-view test a video classification model."""
-
+import shutil
 import numpy as np
+import json
 import torch
-
+import os
 import slowfast.utils.checkpoint as cu
 import slowfast.utils.distributed as du
 import slowfast.utils.logging as logging
@@ -13,10 +14,11 @@ import slowfast.utils.misc as misc
 from slowfast.datasets import loader
 from slowfast.models import build_model
 from slowfast.utils.meters import AVAMeter, TestMeter
-
+from slowfast.datasets.demo import generate_subclip
+import matplotlib.pyplot as plt
 logger = logging.get_logger(__name__)
 
-
+@torch.no_grad()
 def perform_test(test_loader, model, test_meter, cfg):
     """
     For classification:
@@ -38,9 +40,11 @@ def perform_test(test_loader, model, test_meter, cfg):
     # Enable eval mode.
     model.eval()
     test_meter.iter_tic()
-
+    count_line=0
     for cur_iter, (inputs, labels, video_idx, meta) in enumerate(test_loader):
         # Transfer the data to the current GPU device.
+        count_line = count_line+1
+        print("in line",count_line,": label",labels)
         if isinstance(inputs, (list,)):
             for i in range(len(inputs)):
                 inputs[i] = inputs[i].cuda(non_blocking=True)
@@ -87,7 +91,6 @@ def perform_test(test_loader, model, test_meter, cfg):
                 preds, labels, video_idx = du.all_gather(
                     [preds, labels, video_idx]
                 )
-
             test_meter.iter_toc()
             # Update and log stats.
             test_meter.update_stats(
@@ -95,8 +98,8 @@ def perform_test(test_loader, model, test_meter, cfg):
                 labels.detach().cpu(),
                 video_idx.detach().cpu(),
             )
-            test_meter.log_iter_stats(cur_iter)
-
+            #test_meter.log_iter_stats(cur_iter)
+        #print(preds,labels)
         test_meter.iter_tic()
 
     # Log epoch stats and print the final testing results.
@@ -117,6 +120,10 @@ def test(cfg):
 
     # Setup logging format.
     logging.setup_logging()
+    
+    # ADD Demo
+    if cfg.TEST.DEMO_PATH != "":
+        generate_subclip(cfg)
 
     # Print config.
     logger.info("Test with config:")
@@ -176,7 +183,34 @@ def test(cfg):
             cfg.TEST.NUM_ENSEMBLE_VIEWS * cfg.TEST.NUM_SPATIAL_CROPS,
             cfg.MODEL.NUM_CLASSES,
             len(test_loader),
+            (cfg.TEST.DEMO_PATH != ""),
         )
 
     # # Perform multi-view test on the entire dataset.
     perform_test(test_loader, model, test_meter, cfg)
+    if cfg.TEST.DEMO_PATH != "":
+        end_time_dir = os.path.join(cfg.DATA.PATH_TO_DATA_DIR ,"end_time.npy")
+        end_time_array = np.load(end_time_dir)
+        cwd = os.getcwd()
+        probability_dir = os.path.join(cwd, "tmp/probability.npy") 
+        p_array = np.load(probability_dir)
+        print(end_time_array)
+        print(p_array)
+        end_time_dir = os.path.join(cfg.DATA.PATH_TO_DATA_DIR)
+        if end_time_dir.split("/")[-1] == "demo":
+            try:
+                shutil.rmtree(end_time_dir)
+            except OSError as e:
+                print ("Error: %s - %s." % (e.filename, e.strerror))
+        json_list=[]
+        for i in range(len(end_time_array)):
+            json_list.append([end_time_array[i],p_array[i]])
+        print(json_list)
+        with open('data.json', 'w') as f:
+            json.dump({"jogging":str(json_list)}, f)
+        plt.plot(end_time_array, p_array, 'ro-')
+        plt.axis([0, end_time_array[len(end_time_array)-1]+0.5, -0.01, 1.01])
+        plt.xlabel('time')
+        plt.ylabel('probability')
+        plt.suptitle("Jogging/Running")
+        plt.savefig("fig.png")

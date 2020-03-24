@@ -36,6 +36,13 @@ def train_epoch(train_loader, model, optimizer, train_meter, cur_epoch, cfg):
             slowfast/config/defaults.py
     """
     # Enable train mode.
+    for name, param in model.named_parameters():
+        if name != "head.projection.weight" and name != "head.projection.bias":
+            param.requires_grad = False
+        #print(name, param.requires_grad)
+    #for param in model.parameters():
+        #param.requires_grad = False
+    #    print(param)
     model.train()
     train_meter.iter_tic()
     data_size = len(train_loader)
@@ -116,7 +123,7 @@ def train_epoch(train_loader, model, optimizer, train_meter, cur_epoch, cfg):
                 top1_err, top5_err, loss, lr, inputs[0].size(0) * cfg.NUM_GPUS
             )
 
-        train_meter.log_iter_stats(cur_epoch, cur_iter)
+        #train_meter.log_iter_stats(cur_epoch, cur_iter)
         train_meter.iter_tic()
 
     # Log epoch stats.
@@ -194,7 +201,7 @@ def eval_epoch(val_loader, model, val_meter, cur_epoch, cfg):
                 top1_err, top5_err, inputs[0].size(0) * cfg.NUM_GPUS
             )
 
-        val_meter.log_iter_stats(cur_epoch, cur_iter)
+        #val_meter.log_iter_stats(cur_epoch, cur_iter)
         val_meter.iter_tic()
 
     # Log epoch stats.
@@ -202,7 +209,7 @@ def eval_epoch(val_loader, model, val_meter, cur_epoch, cfg):
     val_meter.reset()
 
 
-def calculate_and_update_precise_bn(loader, model, num_iters=200):
+def calculate_and_update_precise_bn(loader, model, num_iters=30):
     """
     Update the stats in bn layers by calculate the precise stats.
     Args:

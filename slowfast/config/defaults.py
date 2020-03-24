@@ -89,7 +89,7 @@ _C.TEST.NUM_ENSEMBLE_VIEWS = 10
 _C.TEST.NUM_SPATIAL_CROPS = 3
 
 # Checkpoint types include `caffe2` or `pytorch`.
-_C.TEST.CHECKPOINT_TYPE = "caffe2"
+_C.TEST.CHECKPOINT_TYPE = "pytorch"
 _C.TEST.DEMO_PATH = ""
 
 # -----------------------------------------------------------------------------
