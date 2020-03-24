@@ -40,10 +40,11 @@ Detect **jogging/running** in video.
 $ git clone --recursive https://github.com/yyyjoe/SlowFast.git
 ```
 
-- Download [UTD-MHAD](https://personal.utdallas.edu/~kehtar/UTD-MHAD.html) dataset and process the data:
+- Run dataset.sh to Download [UTD-MHAD](https://personal.utdallas.edu/~kehtar/UTD-MHAD.html) dataset and process the data:
 ```bash
-$ cd Slowfast/UTD
+$ cd SlowFast/UTD
 $ sh dataset.sh
+$ python process_UTD.py
 # The dataset folder called RGB will be download under /Slowfast/UTD/RGB
 ```
 

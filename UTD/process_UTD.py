@@ -56,7 +56,8 @@ def write_csv(file_list, output_dir):
             #Write item to outcsv
             writer.writerow([item[0], item[1]])
 
-data_path = args.data_dir
+#data_path = args.data_dir
+data_path =os.path.join(os.getcwd(),"RGB")
 out_path = os.path.join(data_path,"short")
 if not os.path.exists(out_path):
     os.mkdir(out_path)

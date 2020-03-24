@@ -301,9 +301,12 @@ class TestMeter(object):
             preds_numpy = self.video_preds.clone()
             propability = np.transpose(np.array(softmax(preds_numpy.cpu().numpy())))
             cwd = os.getcwd()
-            tmp_dir = os.path.join(cwd, "tmp/probability.npy")
+            tmp_dir = os.path.join(cwd, "tmp")
+            if not os.path.exists(tmp_dir):
+                os.mkdir(tmp_dir)
+            out_dir = os.path.join(tmp_dir, "probability.npy")           
             jogging_label = 21
-            np.save(tmp_dir,propability[jogging_label]) 
+            np.save(out_dir,propability[jogging_label]) 
         if not all(self.clip_count == self.num_clips):
             logger.warning(
                 "clip count {} ~= num clips {}".format(
