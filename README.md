@@ -60,7 +60,7 @@ python tools/run_net.py \
   TRAIN.ENABLE True \
 ```
 
-- Trained model for 40 epoches can be download [here](https://drive.google.com/file/d/1KnVFCSyo6XWYVzDKCZKfeSqPDZMV79tH/view?usp=sharing)
+- Trained model for 40 epoches can be download [here](https://drive.google.com/file/d/1KnVFCSyo6XWYVzDKCZKfeSqPDZMV79tH/view?usp=sharing) (the model used for demo).
 
 - Perform Testing (output fig.png and data.json)
 ```
