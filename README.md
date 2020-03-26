@@ -73,6 +73,6 @@ python tools/run_net.py \
 ```
 
 # Demo
-- Trained model for demo [here](https://drive.google.com/file/d/1KnVFCSyo6XWYVzDKCZKfeSqPDZMV79tH/view?usp=sharing)
+- [Trained model](https://drive.google.com/file/d/1KnVFCSyo6XWYVzDKCZKfeSqPDZMV79tH/view?usp=sharing) for demo.
 <img src="./figure/demo.gif"/>
 <img src="./figure/demo1_plot.png"/>
