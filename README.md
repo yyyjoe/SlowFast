@@ -72,6 +72,7 @@ python tools/run_net.py \
   TEST.ENABLE True \
 ```
 
-# Result
+# Demo
+- Trained model for demo [here](https://drive.google.com/file/d/1KnVFCSyo6XWYVzDKCZKfeSqPDZMV79tH/view?usp=sharing)
 <img src="./figure/demo.gif"/>
 <img src="./figure/demo1_plot.png"/>
