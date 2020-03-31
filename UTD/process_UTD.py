@@ -39,11 +39,11 @@ def load_video_generate_csv(dirName):
             continue
         label = int(split[0].replace("a",""))
 
-        #if label >= 23:
-        #    label = label - 2
-        #else:
-        #    label = label - 1
-        label = label - 1
+        if label >= 23:
+            label = label - 2
+        else:
+            label = label - 1
+        #label = label - 1
         if(split[2] == "t1"):
             val_set.append([os.path.join(dirName, f),label])
         else:

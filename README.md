@@ -42,17 +42,15 @@ $ git clone --recursive https://github.com/yyyjoe/SlowFast.git
 
 - Run dataset.sh to Download [UTD-MHAD](https://personal.utdallas.edu/~kehtar/UTD-MHAD.html) dataset and process the data:
 ```bash
-$ cd SlowFast/UTD
-$ sh dataset.sh
-$ python process_UTD.py
+$ cd SlowFast
+$ sh ./UTD/dataset.sh
 # The dataset folder called RGB will be download under /Slowfast/UTD/RGB
 ```
 
 - Download the pretrained Model [Slowfast_8x8_R50] (https://dl.fbaipublicfiles.com/pyslowfast/model_zoo/kinetics400/SLOWFAST_8x8_R50.pkl).
 
-- Perform training (checkpoints saved in `./checkpoints/MODEL_NAME/`)
+- Perform training
 ```
-# cd back to root directory
 python tools/run_net.py \
   --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
   DATA.PATH_TO_DATA_DIR path_to_UTD_dataset \
