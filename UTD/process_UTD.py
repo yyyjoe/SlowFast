@@ -7,6 +7,8 @@ import csv
 import numpy as np
 import sys
 import argparse
+from UTD.download import download_avi_files
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--data_dir', help='foo help')
 args = parser.parse_args()
@@ -33,13 +35,15 @@ def load_video_generate_csv(dirName):
     val_set = []
     for f in file_names:
         split = f.split('_')
+        if len(split) <  4:
+            continue
         label = int(split[0].replace("a",""))
 
-        if label >= 23:
-            label = label - 2
-        else:
-            label = label - 1
-
+        #if label >= 23:
+        #    label = label - 2
+        #else:
+        #    label = label - 1
+        label = label - 1
         if(split[2] == "t1"):
             val_set.append([os.path.join(dirName, f),label])
         else:
@@ -57,15 +61,23 @@ def write_csv(file_list, output_dir):
             writer.writerow([item[0], item[1]])
 
 #data_path = args.data_dir
-data_path =os.path.join(os.getcwd(),"RGB")
+data_path =os.path.join(os.getcwd(),"UTD/RGB")
 out_path = os.path.join(data_path,"short")
 if not os.path.exists(out_path):
     os.mkdir(out_path)
 
+# download my own running/jogging data under /UTD/run_avi
+download_avi_files()
+own_data = os.path.join(os.getcwd(),"UTD/jogging_avi")
 
+# Generate a shorter video at /UTD/RGB/short
 generate_subclip(data_path,out_path)
 
+# Generate list of FilePath
 train_set, val_set = load_video_generate_csv(out_path)
+my_train_set, my_val_set = load_video_generate_csv(own_data)
+train_set = train_set + my_train_set
+val_set = val_set + my_val_set
 
 train_csv = os.path.join(data_path,"train.csv")
 val_csv = os.path.join(data_path,"val.csv")
@@ -74,5 +86,6 @@ test_csv = os.path.join(data_path,"test.csv")
 write_csv(train_set,train_csv)
 write_csv(val_set,val_csv)
 write_csv(val_set,test_csv)
+
 
 
