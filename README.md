@@ -58,7 +58,7 @@ python tools/run_net.py \
   TRAIN.ENABLE True \
 ```
 
-- Trained model for 40 epoches can be download [here](https://drive.google.com/file/d/1KnVFCSyo6XWYVzDKCZKfeSqPDZMV79tH/view?usp=sharing) (the model used for demo).
+- Trained model for 50 epoches can be download [here](https://drive.google.com/file/d/1f4AXrISma1piKr746V-I29H-vU3iql08/view?usp=sharing) (the model used for demo).
 
 - Perform Testing (output fig.png and data.json)
 ```
@@ -71,6 +71,6 @@ python tools/run_net.py \
 ```
 
 # Demo
-- [Trained model](https://drive.google.com/file/d/1KnVFCSyo6XWYVzDKCZKfeSqPDZMV79tH/view?usp=sharing) for demo.
+- [Trained model](https://drive.google.com/file/d/1f4AXrISma1piKr746V-I29H-vU3iql08/view?usp=sharing) for demo.
 <img src="./figure/demo.gif"/>
 <img src="./figure/demo1_plot.png"/>
