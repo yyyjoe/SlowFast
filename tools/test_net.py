@@ -206,11 +206,11 @@ def test(cfg):
         for i in range(len(end_time_array)):
             json_list.append([end_time_array[i],p_array[i]])
         print(json_list)
-        with open('data.json', 'w') as f:
+        with open('timeLabel.json', 'w') as f:
             json.dump({"jogging":str(json_list)}, f)
         plt.plot(end_time_array, p_array, 'ro-')
         plt.axis([0, end_time_array[len(end_time_array)-1]+0.5, -0.01, 1.01])
-        plt.xlabel('time')
+        plt.xlabel('time(s)')
         plt.ylabel('probability')
         plt.suptitle("Jogging/Running")
         plt.savefig("fig.png")

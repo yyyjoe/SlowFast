@@ -1,7 +1,7 @@
 # Video Action Recognition
 Smart home technologies can help take care of elderly people or children in their daily life. In this project, I built an application that can detect running/jogging action via visual sensor. Given an RGB video, the model will output the probability of detecting running/jogging in that time period. Running/Jogging is a dangerous action at home, so, in application, when the model detects running/jogging from the home visual sensor, it can send warning messages to the family member and avoid injuries.
 
-## Goal
+# Goal
 Detect **jogging/running** in video.
 
 # Dataset
@@ -53,12 +53,12 @@ $ sh ./UTD/dataset.sh
 ```
 python tools/run_net.py \
   --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
-  DATA.PATH_TO_DATA_DIR path_to_UTD_dataset \
+  DATA.PATH_TO_DATA_DIR path_to_RGB_folder \
   TRAIN.CHECKPOINT_FILE_PATH path_to_Slowfast_8x8_R50_checkpoint \
   TRAIN.ENABLE True \
 ```
 
-- Trained model for 50 epoches can be download [here](https://drive.google.com/file/d/1f4AXrISma1piKr746V-I29H-vU3iql08/view?usp=sharing) (the model used for demo).
+- Trained model for 50 epochs can be download [here](https://drive.google.com/file/d/1s_AMdFbyD6GMao9zisYfTWPezp6yDdf5/view?usp=sharing) (the model used for demo).
 
 - Perform Testing (output fig.png and data.json)
 ```
@@ -71,6 +71,6 @@ python tools/run_net.py \
 ```
 
 # Demo
-- [Trained model](https://drive.google.com/file/d/1f4AXrISma1piKr746V-I29H-vU3iql08/view?usp=sharing) for demo.
+- [Final Trained Model](https://drive.google.com/file/d/1s_AMdFbyD6GMao9zisYfTWPezp6yDdf5/view?usp=sharing) for demo. (the same as trained model for 50 epochs above)
 <img src="./figure/demo.gif"/>
-<img src="./figure/demo1_plot.png"/>
+<img src="./figure/sample1_fig_part5.png"/>
