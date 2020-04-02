@@ -60,7 +60,7 @@ python tools/run_net.py \
 
 - Trained model for 50 epochs can be download [here](https://drive.google.com/file/d/1s_AMdFbyD6GMao9zisYfTWPezp6yDdf5/view?usp=sharing) (the model used for demo).
 
-- Perform Testing (output fig.png and data.json)
+- Perform Testing (output fig.png and timeLabel.json)
 ```
 python tools/run_net.py \
   --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
