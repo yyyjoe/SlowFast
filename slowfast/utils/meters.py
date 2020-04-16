@@ -299,13 +299,26 @@ class TestMeter(object):
         """
         if self.isDemo:
             preds_numpy = self.video_preds.clone()
+            normalize = np.array(softmax(preds_numpy.cpu().numpy()))
+            jogging_label = 21
+            sort_p = []
+            for p in normalize:
+                sort_p.append(sorted(p,reverse=True))
+
             propability = np.transpose(np.array(softmax(preds_numpy.cpu().numpy())))
+
+            for i,v in enumerate(propability[jogging_label]):
+                top1_v = sort_p[i][0]
+                top2_v = sort_p[i][1]
+                if v == top1_v or v == top2_v:
+                    propability[jogging_label][i] = propability[jogging_label][i]/(top1_v+top2_v)
+
             cwd = os.getcwd()
             tmp_dir = os.path.join(cwd, "tmp")
             if not os.path.exists(tmp_dir):
                 os.mkdir(tmp_dir)
             out_dir = os.path.join(tmp_dir, "probability.npy")           
-            jogging_label = 21
+            
             np.save(out_dir,propability[jogging_label]) 
         if not all(self.clip_count == self.num_clips):
             logger.warning(

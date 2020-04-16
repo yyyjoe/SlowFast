@@ -1,5 +1,8 @@
 # Video Action Recognition
-Smart home technologies can help take care of elderly people or children in their daily life. In this project, I built an application that can detect running/jogging action via visual sensor. Given an RGB video, the model will output the probability of detecting running/jogging in that time period. Running/Jogging is a dangerous action at home, so, in application, when the model detects running/jogging from the home visual sensor, it can send warning messages to the family member and avoid injuries.
+Smart home technologies can help take care of elderly people or children in their daily life. In this project, I built an application that can detect running/jogging action via visual sensor. Given an RGB video, the model will output the probability of detecting running/jogging in that time period. Running/Jogging is a dangerous action at home, so, in application, when the model detects running/jogging from the home visual sensor, it can send warning messages to the family member and avoid injuries. 
+
+We use [SlowFast](https://github.com/facebookresearch/SlowFast), proposed by Facebook Research Team, as our pretrained model for feature extraction, and fintune the model on UTD-MHAD dataset.
+(This repository is for CSCE 636 Deep Learning Project)
 
 # Goal
 Detect **jogging/running** in video.
@@ -47,23 +50,23 @@ $ sh ./UTD/dataset.sh
 # The dataset folder called RGB will be download under /Slowfast/UTD/RGB
 ```
 
-- Download the pretrained Model [Slowfast_8x8_R50] (https://dl.fbaipublicfiles.com/pyslowfast/model_zoo/kinetics400/SLOWFAST_8x8_R50.pkl).
+- Download the pretrained Model [Slowfast_4x16_R50] (https://dl.fbaipublicfiles.com/pyslowfast/model_zoo/kinetics400/SLOWFAST_4x16_R50.pkl).
 
 - Perform training
 ```
 python tools/run_net.py \
-  --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
+  --cfg configs/Kinetics/c2/SLOWFAST_4x16_R50.yaml \
   DATA.PATH_TO_DATA_DIR path_to_RGB_folder \
-  TRAIN.CHECKPOINT_FILE_PATH path_to_Slowfast_8x8_R50_checkpoint \
+  TRAIN.CHECKPOINT_FILE_PATH path_to_Slowfast_4x16_R50_checkpoint \
   TRAIN.ENABLE True \
 ```
 
-- Trained model for 50 epochs can be download [here](https://drive.google.com/file/d/1s_AMdFbyD6GMao9zisYfTWPezp6yDdf5/view?usp=sharing) (the model used for demo).
+- Trained model for 50 epochs can be download [here](https://drive.google.com/file/d/1te3tp1lc3QyG5ljgbYERAP3PrxAO2Dii/view?usp=sharing) (the model used for demo).
 
 - Perform Testing (output fig.png and timeLabel.json)
 ```
 python tools/run_net.py \
-  --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
+  --cfg configs/Kinetics/c2/SLOWFAST_4x16_R50.yaml \
   TEST.CHECKPOINT_TYPE pytorch \
   TEST.CHECKPOINT_FILE_PATH  path_to_checkpoint \
   TEST.DEMO_PATH path_to_demo_video\
@@ -71,6 +74,9 @@ python tools/run_net.py \
 ```
 
 # Demo
+- [Final Trained Model](https://drive.google.com/file/d/1te3tp1lc3QyG5ljgbYERAP3PrxAO2Dii/view?usp=sharing) for demo. (the same as trained model for 50 epochs above)
+<!---
 - [Final Trained Model](https://drive.google.com/file/d/1s_AMdFbyD6GMao9zisYfTWPezp6yDdf5/view?usp=sharing) for demo. (the same as trained model for 50 epochs above)
+-->
 <img src="./figure/demo.gif"/>
-<img src="./figure/sample1_fig_part5.png"/>
+<img src="./figure/part6_sample1_fig.png"/>
