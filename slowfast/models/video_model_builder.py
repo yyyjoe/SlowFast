@@ -381,12 +381,23 @@ class SlowFast(nn.Module):
     def forward(self, x, bboxes=None):
         x = self.s1(x)
         x = self.s1_fuse(x)
+
         x = self.s2(x)
+        if self.enable_attention:
+            x2_attn = self.s2_attention(x)
+            x[0] = x[0] * x2_attn[0]
+            x[1] = x[1] * x2_attn[1]
         x = self.s2_fuse(x)
+
         for pathway in range(self.num_pathways):
             pool = getattr(self, "pathway{}_pool".format(pathway))
             x[pathway] = pool(x[pathway])
+
         x = self.s3(x)
+        if self.enable_attention:
+            x3_attn = self.s3_attention(x)
+            x[0] = x[0] * x3_attn[0]
+            x[1] = x[1] * x3_attn[1]
         x = self.s3_fuse(x)
 
         x = self.s4(x)
