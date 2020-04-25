@@ -357,6 +357,7 @@ _C.DETECTION = CfgNode()
 
 # Whether enable video detection.
 _C.DETECTION.ENABLE = False
+_C.ATTENTION.ENABLE = False
 
 # Aligned version of RoI. More details can be found at slowfast/models/head_helper.py
 _C.DETECTION.ALIGNED = True

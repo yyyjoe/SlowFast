@@ -8,7 +8,7 @@ import torch.nn as nn
 
 import slowfast.utils.weight_init_helper as init_helper
 
-from . import head_helper, resnet_helper, stem_helper
+from . import head_helper, resnet_helper, stem_helper, attention_helper
 from .build import MODEL_REGISTRY
 
 # Number of blocks for different stages given the model depth.
@@ -125,6 +125,7 @@ class FuseFastToSlow(nn.Module):
         return [x_s_fuse, x_f]
 
 
+
 @MODEL_REGISTRY.register()
 class SlowFast(nn.Module):
     """
@@ -145,6 +146,7 @@ class SlowFast(nn.Module):
         """
         super(SlowFast, self).__init__()
         self.enable_detection = cfg.DETECTION.ENABLE
+        self.enable_attention = cfg.ATTENTION.ENABLE
         self.num_pathways = 2
         self._construct_network(cfg)
         init_helper.init_weights(
@@ -281,6 +283,12 @@ class SlowFast(nn.Module):
             trans_func_name=cfg.RESNET.TRANS_FUNC,
             dilation=cfg.RESNET.SPATIAL_DILATIONS[2],
         )
+
+        self.s4_attention = attention_helper.SoftAttn(dim_out=[
+                width_per_group * 16,
+                width_per_group * 16 // cfg.SLOWFAST.BETA_INV,
+            ])
+
         self.s4_fuse = FuseFastToSlow(
             width_per_group * 16 // cfg.SLOWFAST.BETA_INV,
             cfg.SLOWFAST.FUSION_CONV_CHANNEL_RATIO,
@@ -368,9 +376,17 @@ class SlowFast(nn.Module):
             x[pathway] = pool(x[pathway])
         x = self.s3(x)
         x = self.s3_fuse(x)
+
         x = self.s4(x)
+        if self.enable_attention:
+            x4_attn = self.s4_attention(x)
+            x[0] = x[0] * x4_attn[0]
+            x[1] = x[1] * x4_attn[1]
         x = self.s4_fuse(x)
+
         x = self.s5(x)
+ 
+
         if self.enable_detection:
             x = self.head(x, bboxes)
         else:
