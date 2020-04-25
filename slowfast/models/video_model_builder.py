@@ -218,10 +218,7 @@ class SlowFast(nn.Module):
             dilation=cfg.RESNET.SPATIAL_DILATIONS[0],
         )
 
-        self.s2_attention = attention_helper.SoftAttn([
-                width_per_group * 4,
-                width_per_group * 4 // cfg.SLOWFAST.BETA_INV,
-        ])
+
 
         self.s2_fuse = FuseFastToSlow(
             width_per_group * 4 // cfg.SLOWFAST.BETA_INV,
@@ -383,10 +380,6 @@ class SlowFast(nn.Module):
         x = self.s1_fuse(x)
 
         x = self.s2(x)
-        if self.enable_attention:
-            x2_attn = self.s2_attention(x)
-            x[0] = x[0] * x2_attn[0]
-            x[1] = x[1] * x2_attn[1]
         x = self.s2_fuse(x)
 
         for pathway in range(self.num_pathways):
