@@ -218,7 +218,7 @@ class SlowFast(nn.Module):
             dilation=cfg.RESNET.SPATIAL_DILATIONS[0],
         )
 
-        self.s2_attention = attention_helper.SoftAttn(dim_out=[
+        self.s2_attention = attention_helper.SoftAttn([
                 width_per_group * 4,
                 width_per_group * 4 // cfg.SLOWFAST.BETA_INV,
         ])
@@ -261,7 +261,7 @@ class SlowFast(nn.Module):
             dilation=cfg.RESNET.SPATIAL_DILATIONS[1],
         )
 
-        self.s3_attention = attention_helper.SoftAttn(dim_out=[
+        self.s3_attention = attention_helper.SoftAttn([
                 width_per_group * 8,
                 width_per_group * 8 // cfg.SLOWFAST.BETA_INV,
         ])
@@ -296,7 +296,7 @@ class SlowFast(nn.Module):
             dilation=cfg.RESNET.SPATIAL_DILATIONS[2],
         )
 
-        self.s4_attention = attention_helper.SoftAttn(dim_out=[
+        self.s4_attention = attention_helper.SoftAttn([
                 width_per_group * 16,
                 width_per_group * 16 // cfg.SLOWFAST.BETA_INV,
         ])
