@@ -217,6 +217,12 @@ class SlowFast(nn.Module):
             trans_func_name=cfg.RESNET.TRANS_FUNC,
             dilation=cfg.RESNET.SPATIAL_DILATIONS[0],
         )
+
+        self.s2_attention = attention_helper.SoftAttn(dim_out=[
+                width_per_group * 4,
+                width_per_group * 4 // cfg.SLOWFAST.BETA_INV,
+        ])
+
         self.s2_fuse = FuseFastToSlow(
             width_per_group * 4 // cfg.SLOWFAST.BETA_INV,
             cfg.SLOWFAST.FUSION_CONV_CHANNEL_RATIO,
@@ -254,6 +260,12 @@ class SlowFast(nn.Module):
             trans_func_name=cfg.RESNET.TRANS_FUNC,
             dilation=cfg.RESNET.SPATIAL_DILATIONS[1],
         )
+
+        self.s3_attention = attention_helper.SoftAttn(dim_out=[
+                width_per_group * 8,
+                width_per_group * 8 // cfg.SLOWFAST.BETA_INV,
+        ])
+
         self.s3_fuse = FuseFastToSlow(
             width_per_group * 8 // cfg.SLOWFAST.BETA_INV,
             cfg.SLOWFAST.FUSION_CONV_CHANNEL_RATIO,
@@ -287,7 +299,7 @@ class SlowFast(nn.Module):
         self.s4_attention = attention_helper.SoftAttn(dim_out=[
                 width_per_group * 16,
                 width_per_group * 16 // cfg.SLOWFAST.BETA_INV,
-            ])
+        ])
 
         self.s4_fuse = FuseFastToSlow(
             width_per_group * 16 // cfg.SLOWFAST.BETA_INV,

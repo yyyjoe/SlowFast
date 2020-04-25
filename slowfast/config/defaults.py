@@ -354,6 +354,7 @@ _C.DATA_LOADER.ENABLE_MULTI_THREAD_DECODE = False
 # Detection options.
 # ---------------------------------------------------------------------------- #
 _C.DETECTION = CfgNode()
+_C.ATTENTION = CfgNode()
 
 # Whether enable video detection.
 _C.DETECTION.ENABLE = False

@@ -33,10 +33,10 @@ class SpatialAttn(nn.Module):
         x = x.mean(1, keepdim=True)
         # 3-by-3 conv
         x = self.conv1(x)
-        # bilinear resizing
+        # trilinear resizing
         x = F.upsample(
             x, (x.size(2) * 2, x.size(3) * 2, x.size(4) * 2),
-            mode='bilinear',
+            mode='trilinear',
             align_corners=True
         )
         # scaling conv
@@ -55,11 +55,12 @@ class ChannelAttn(nn.Module):
 
     def forward(self, x):
         # squeeze operation (global average pooling)
-        # x = F.avg_pool2d(x, x.size()[2:])
+
         x = F.avg_pool3d(x, (1,x.size(3),x.size(4)))
         # excitation operation (2 conv layers)
         x = self.conv1(x)
         x = self.conv2(x)
+        x = x.mean(1, keepdim=True)
         return x
 
 class SoftAttn(nn.Module):
@@ -68,11 +69,10 @@ class SoftAttn(nn.Module):
         super(SoftAttn, self).__init__()
         self.spatial_attn = SpatialAttn()
         self.channel_attn = ChannelAttn(in_channels[1])
-        #self.conv = ConvBlock(in_channels, in_channels, 1)
+
 
     def forward(self, x):
         x_s = torch.sigmoid(self.spatial_attn(x[0]))
         x_f = torch.sigmoid(self.channel_attn(x[1]))
-        #y = y_spatial * y_channel
-        #y = torch.sigmoid(self.conv(y))
+
         return [x_s,x_f]

@@ -37,12 +37,12 @@ def train_epoch(train_loader, model, optimizer, train_meter, cur_epoch, cfg):
     """
     # Enable train mode.
     for name, param in model.named_parameters():
-        if name != "head.projection.weight" and name != "head.projection.bias":
+        train_list = ["head","s4_attention","s3_attention","s2_attention"]
+        if not name.split(".")[0] in train_list:
             param.requires_grad = False
         #print(name, param.requires_grad)
-    #for param in model.parameters():
-        #param.requires_grad = False
-    #    print(param)
+    
+    
     model.train()
     train_meter.iter_tic()
     data_size = len(train_loader)
