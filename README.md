@@ -50,20 +50,37 @@ $ sh ./UTD/dataset.sh
 # The dataset folder called RGB will be download under /Slowfast/UTD/RGB
 ```
 
-- Download the pretrained Model [Slowfast_4x16_R50] (https://dl.fbaipublicfiles.com/pyslowfast/model_zoo/kinetics400/SLOWFAST_4x16_R50.pkl).
+- Download the pretrained Model [Slowfast_8x8_R50] (https://dl.fbaipublicfiles.com/pyslowfast/model_zoo/kinetics400/SLOWFAST_8x8_R50.pkl).
 
-- Perform training
+- Perform training (output checkpoint, fig.png, and timeLabel.json.)
 ```
 python tools/run_net.py \
-  --cfg configs/Kinetics/c2/SLOWFAST_4x16_R50.yaml \
+  --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
   DATA.PATH_TO_DATA_DIR path_to_RGB_folder \
-  TRAIN.CHECKPOINT_FILE_PATH path_to_Slowfast_4x16_R50_checkpoint \
+  TRAIN.CHECKPOINT_FILE_PATH path_to_Slowfast_8x8_R50_checkpoint \
   TRAIN.ENABLE True \
+  ATTENTION.ENABLE True \
 ```
 
-- Trained model for 50 epochs can be download [here](https://drive.google.com/file/d/1te3tp1lc3QyG5ljgbYERAP3PrxAO2Dii/view?usp=sharing) (the model used for demo).
+# Testing
+Perform testing on given demo video.
 
-- Perform Testing (output fig.png and timeLabel.json)
+<!--- 
+- Trained model for 50 epochs can be download [here](https://drive.google.com/file/d/1te3tp1lc3QyG5ljgbYERAP3PrxAO2Dii/view?usp=sharing) (the model used for demo).
+-->
+
+- Perform Testing on part 8. [Model](https://drive.google.com/file/d/13KmD7VIXGSCMrqvaga5ETxRDrHlhhlnS/view?usp=sharing)
+```
+python tools/run_net.py \
+  --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
+  TEST.CHECKPOINT_TYPE pytorch \
+  TEST.CHECKPOINT_FILE_PATH  path_to_checkpoint \
+  TEST.DEMO_PATH path_to_demo_video\
+  TEST.ENABLE True \
+  ATTENTION.ENABLE True \
+```
+
+- Perform Testing on part 6,7. [Model](https://drive.google.com/file/d/1te3tp1lc3QyG5ljgbYERAP3PrxAO2Dii/view?usp=sharing)
 ```
 python tools/run_net.py \
   --cfg configs/Kinetics/c2/SLOWFAST_4x16_R50.yaml \
@@ -73,10 +90,38 @@ python tools/run_net.py \
   TEST.ENABLE True \
 ```
 
+- Perform Testing on part 5. [Model](https://drive.google.com/file/d/1s_AMdFbyD6GMao9zisYfTWPezp6yDdf5/view?usp=sharing)
+```
+python tools/run_net.py \
+  --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
+  TEST.CHECKPOINT_TYPE pytorch \
+  TEST.CHECKPOINT_FILE_PATH  path_to_checkpoint \
+  TEST.DEMO_PATH path_to_demo_video\
+  TEST.ENABLE True \
+```
+
+- Perform Testing on part 4. [Model](https://drive.google.com/file/d/1z8W499vpMrFdBFnSYvKBf54MMr0_61XO/view?usp=sharing)
+```
+python tools/run_net.py \
+  --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
+  TEST.CHECKPOINT_TYPE pytorch \
+  TEST.CHECKPOINT_FILE_PATH  path_to_checkpoint \
+  TEST.DEMO_PATH path_to_demo_video\
+  TEST.ENABLE True \
+```
+
+
 # Demo
+<!--- part8 -->
+- Use [Part8 model](https://drive.google.com/file/d/13KmD7VIXGSCMrqvaga5ETxRDrHlhhlnS/view?usp=sharing) for demo.
+
+<!--- part6,7
 - [Final Trained Model](https://drive.google.com/file/d/1te3tp1lc3QyG5ljgbYERAP3PrxAO2Dii/view?usp=sharing) for demo. (the same as trained model for 50 epochs above)
-<!---
+-->
+
+<!--- part5
 - [Final Trained Model](https://drive.google.com/file/d/1s_AMdFbyD6GMao9zisYfTWPezp6yDdf5/view?usp=sharing) for demo. (the same as trained model for 50 epochs above)
 -->
+
 <img src="./figure/demo.gif"/>
-<img src="./figure/part6_sample1_fig.png"/>
+<img src="./figure/sample1_fig_part8.png"/>
