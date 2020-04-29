@@ -63,7 +63,7 @@ python tools/run_net.py \
 ```
 
 # Testing
-Perform testing on given demo video. (generate fig.png, and timeLabel.json.)
+Perform testing on given demo video (generate fig.png, and timeLabel.json.).
 
 <!--- 
 - Trained model for 50 epochs can be download [here](https://drive.google.com/file/d/1te3tp1lc3QyG5ljgbYERAP3PrxAO2Dii/view?usp=sharing) (the model used for demo).
