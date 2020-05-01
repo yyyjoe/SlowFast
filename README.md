@@ -41,11 +41,11 @@ Detect **jogging/running** in video.
 - Clone this repository:
 ```bash
 $ git clone --recursive https://github.com/yyyjoe/SlowFast.git
+$ cd SlowFast
 ```
-
+- **Go to testing part if you only want to test the demo video (no need to download dataset)**:
 - Run dataset.sh to Download [UTD-MHAD](https://personal.utdallas.edu/~kehtar/UTD-MHAD.html) dataset and process the data:
 ```bash
-$ cd SlowFast
 $ sh ./UTD/dataset.sh
 # The dataset folder called RGB will be download under /Slowfast/UTD/RGB
 ```
