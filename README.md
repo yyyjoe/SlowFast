@@ -69,7 +69,12 @@ Perform testing on given demo video (generate fig.png, and timeLabel.json.).
 - Trained model for 50 epochs can be download [here](https://drive.google.com/file/d/1te3tp1lc3QyG5ljgbYERAP3PrxAO2Dii/view?usp=sharing) (the model used for demo).
 -->
 
-- Perform Testing on part 8. [Model](https://drive.google.com/file/d/13KmD7VIXGSCMrqvaga5ETxRDrHlhhlnS/view?usp=sharing)
+- Perform Testing on part 8. 
+- Download part 8 model by running download.py or download  [here](https://drive.google.com/file/d/13KmD7VIXGSCMrqvaga5ETxRDrHlhhlnS/view?usp=sharing).
+```
+python download.py
+#the model will be downloaded under demo/
+```
 ```
 python tools/run_net.py \
   --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
