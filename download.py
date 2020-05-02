@@ -72,10 +72,10 @@ if __name__ == "__main__":
         os.makedirs(path)
     
 
-    file_id = '13KmD7VIXGSCMrqvaga5ETxRDrHlhhlnS'
-    destination = './demo/model.zip'
+    file_id = '1_JM7Ze-vk1ueceElyHv4pd8sS4o-uc1t'
+    destination = './demo/checkpoint_epoch_00050_0.01.pyth.zip'
     download_file_from_google_drive(file_id, destination)
     with zipfile.ZipFile(destination) as zf:
         zip_dir = zf.namelist()[0]
-        zf.extractall('./model')
+        zf.extractall('./demo')
     os.remove(destination)
