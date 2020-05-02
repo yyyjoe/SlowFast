@@ -75,7 +75,7 @@ python tools/run_net.py \
   --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
   TEST.CHECKPOINT_TYPE pytorch \
   TEST.CHECKPOINT_FILE_PATH  path_to_checkpoint \
-  TEST.DEMO_PATH path_to_demo_video\
+  TEST.DEMO_PATH demo/sample1_video.avi\
   TEST.ENABLE True \
   ATTENTION.ENABLE True \
 ```
@@ -86,7 +86,7 @@ python tools/run_net.py \
   --cfg configs/Kinetics/c2/SLOWFAST_4x16_R50.yaml \
   TEST.CHECKPOINT_TYPE pytorch \
   TEST.CHECKPOINT_FILE_PATH  path_to_checkpoint \
-  TEST.DEMO_PATH path_to_demo_video\
+  TEST.DEMO_PATH demo/sample1_video.avi\
   TEST.ENABLE True \
 ```
 
@@ -96,7 +96,7 @@ python tools/run_net.py \
   --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
   TEST.CHECKPOINT_TYPE pytorch \
   TEST.CHECKPOINT_FILE_PATH  path_to_checkpoint \
-  TEST.DEMO_PATH path_to_demo_video\
+  TEST.DEMO_PATH demo/sample1_video.avi\
   TEST.ENABLE True \
 ```
 
@@ -106,7 +106,7 @@ python tools/run_net.py \
   --cfg configs/Kinetics/c2/SLOWFAST_8x8_R50.yaml \
   TEST.CHECKPOINT_TYPE pytorch \
   TEST.CHECKPOINT_FILE_PATH  path_to_checkpoint \
-  TEST.DEMO_PATH path_to_demo_video\
+  TEST.DEMO_PATH demo/sample1_video.avi \
   TEST.ENABLE True \
 ```
 
